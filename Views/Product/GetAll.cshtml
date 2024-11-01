@@ -1,0 +1,35 @@
+@{
+    ViewData["Title"] = "Todos los Productos";
+}
+@model List<Product>;
+
+<section class="container" >
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Producto</th>
+            <th>Precio</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (Product producto in Model)
+        {
+            <tr>
+                <td>@producto.IdProducto</td>
+                <td>@producto.Descripcion</td>
+                <td>@producto.Precio</td>
+            </tr>
+        }
+
+        </tbody>
+    </table>
+    @* <ul>
+        @foreach (Product producto in Model)
+        {
+            <li>Id:@producto.IdProducto, Producto: @producto.Descripcion, Precio: @producto.Precio</li>
+        }
+    </ul> *@
+    <button type="button" class="btn btn-secondary"> <a href="@Url.Action("Index", "Product")" style="text-decoration: none; color: inherit;">Volver</a> </button>
+    
+</section> 

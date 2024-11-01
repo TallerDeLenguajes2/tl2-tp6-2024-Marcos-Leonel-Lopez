@@ -1,0 +1,32 @@
+@{
+    ViewData["Title"] = "Producto";
+}
+@model Product
+
+
+<section class="container" >
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Producto</th>
+            <th>Precio</th>
+        </tr>
+        </thead>
+        <tbody>
+       
+        
+            <tr>
+                <td>@Model.IdProducto</td>
+                <td>@Model.Descripcion</td>
+                <td>@Model.Precio</td>
+            </tr>
+        
+
+        </tbody>
+    </table>
+    <button type="button" class="btn btn-secondary"> <a href="@Url.Action("Index", "Product")" style="text-decoration: none; color: inherit;">Volver</a> </button>
+
+
+
+
