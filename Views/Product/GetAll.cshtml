@@ -4,7 +4,7 @@
 @model List<Product>;
 
 <section class="container" >
-    <table class="table table-striped">
+    <table class="table table-striped" id="tabla-productos">
         <thead>
         <tr>
             <th>Id</th>
@@ -30,6 +30,6 @@
             <li>Id:@producto.IdProducto, Producto: @producto.Descripcion, Precio: @producto.Precio</li>
         }
     </ul> *@
-    <button type="button" class="btn btn-secondary"> <a href="@Url.Action("Index", "Product")" style="text-decoration: none; color: inherit;">Volver</a> </button>
+    <button type="button" class="btn btn-secondary"> <a href="@Url.Action("Index", "Product")" >Volver</a> </button>
     
 </section> 
