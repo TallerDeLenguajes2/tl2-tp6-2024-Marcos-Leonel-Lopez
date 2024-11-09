@@ -21,8 +21,8 @@ public class Presupuesto
         this.detalle = detalles;
     }
 
-    public int IdPresupuesto { get => idPresupuesto; }
-    public string NombreDestinatario { get => nombreDestinatario; }
+    public int IdPresupuesto { get => idPresupuesto; set => idPresupuesto = value;}
+    public string NombreDestinatario { get => nombreDestinatario; set => nombreDestinatario = value;}
     public List<PresupuestosDetalle> Detalle { get => detalle; }
 
     public double MontoPresupuesto()

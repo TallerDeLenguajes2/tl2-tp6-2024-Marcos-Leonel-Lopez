@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "Gestión de Presupuestos";
+}
+<section class="container">
+    <div class="text-left">
+        <h1>Gestión de Presupuestos</h1>
+        <ul class="list-group">
+            <li class="list-group-item"><a asp-controller="Presupuesto" asp-action="GetAll">Ver lista completa de
+                    presupuestos</a>
+            </li>
+            <li class="list-group-item">
+                @* hace referencia al nombre de la funcion en el controlador *@
+                <form asp-controller="Presupuesto" asp-action="GetById" method="get">
+                    <label for="productId">Ver producto por ID:</label>
+                    <input type="text" id="productId" name="id" required />
+                    <button type="submit">Ver Presupuesto</button>
+                </form>
+            </li>
+            <li class="list-group-item">
+                <a asp-controller="Presupuesto" asp-action="Create">Crear un nuevo presupuesto</a>
+            </li>
+            @* <li class="list-group-item">
+                <form asp-controller="Presupuesto" asp-action="Update" method="get">
+                    <label for="productId">Modificar un producto por ID:</label>
+                    <input type="text" id="productId" name="id" required />
+                    <button type="submit">Ir</button>
+                </form>
+            </li>
+            <li class="list-group-item">
+                <form asp-controller="Presupuesto" asp-action="Delete" method="get">
+                    <label for="deleteId">Borrar producto por ID:</label>
+                    <input type="text" id="deleteId" name="id" required />
+                    <button type="submit">Borrar Producto</button>
+                </form>
+            </li> *@
+        </ul>
+    </div>
+</section>

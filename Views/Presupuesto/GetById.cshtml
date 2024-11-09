@@ -1,0 +1,47 @@
+@{
+    ViewData["Title"] = "Presupuestos";
+}
+
+
+@model Presupuesto
+
+<section class="container">
+
+        
+        <section class="mt-4">
+            <h3 class="d-inline">@Model.NombreDestinatario</h3>
+            <p class="d-inline">Presupuesto id# @Model.IdPresupuesto</p>
+        </section>
+        
+        <div class="row bg-dark text-white p-2 rounded">
+            <!-- Encabezados de columnas -->
+            <div class="col-6 fw-bold">Producto</div>
+            <div class="col-3 fw-bold">Precio</div>
+            <div class="col-3 fw-bold">Cantidad</div>
+        </div>
+
+        <!-- Detalle del presupuesto -->
+        @if (Model.Detalle != null && Model.Detalle.Any())
+        {
+            @foreach (var detalle in Model.Detalle)
+            {
+                <div class="row bg-light p-2 border-bottom">
+                    <div class="col-6">@detalle.Producto.Descripcion</div>
+                    <div class="col-3">@detalle.Producto.Precio.ToString("C")</div>
+                    <div class="col-3">@detalle.Cantidad</div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="row bg-light p-2 border-bottom">
+                <div class="col-12"><em>Sin productos</em></div>
+            </div>
+        }
+    
+
+    <!-- Botón de regreso -->
+    <button type="button" class="btn btn-secondary mt-4">
+        <a href="@Url.Action("Index", "Presupuesto")" class="text-white text-decoration-none">Volver</a>
+    </button>
+</section>

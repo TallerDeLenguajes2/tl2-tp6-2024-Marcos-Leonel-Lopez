@@ -95,7 +95,7 @@ namespace PresupuestoRepo
         }
         public Presupuesto GetById(int id)
         {
-            Presupuesto presupuesto = new Presupuesto();
+            Presupuesto presupuesto = null;
             string queryPresupuestos = "SELECT idPresupuesto, NombreDestinatario FROM Presupuestos WHERE idPresupuesto = @id";
             string queryDetalles = @"
                             SELECT pd.idProducto, pd.Cantidad, p.Descripcion, p.Precio
@@ -163,7 +163,7 @@ namespace PresupuestoRepo
                     command.Parameters.AddWithValue("@nombreDestinatario", obj.NombreDestinatario);
                     command.Parameters.AddWithValue("@fechaCreacion", DateTime.Now);
                     obj.setId(Convert.ToInt32(command.ExecuteScalar()));
-                    command.ExecuteNonQuery();
+                    // command.ExecuteNonQuery();
                 }
                 // Insertar los detalles del presupuesto
                 connection.Close();

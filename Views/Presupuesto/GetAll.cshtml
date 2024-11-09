@@ -1,0 +1,72 @@
+@{
+    ViewData["Title"] = "Todos los Presupuestos";
+}
+@* @model List<Presupuesto>;
+
+<section class="container" >
+@foreach (Presupuesto presupuesto in Model)
+{
+<table class="table table-dark table-hover" id="tabla-productos">
+<thead>
+<tr>
+<th>Id</th>
+<th>Producto</th>
+<th>Precio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>@producto.IdProducto</td>
+<td>@producto.Descripcion</td>
+<td>@producto.Precio</td>
+</tr>
+</tbody>
+</table>
+}
+<button type="button" class="btn btn-secondary"> <a href="@Url.Action("Index", "Producto")" >Volver</a> </button>
+
+</section> *@
+
+@model List<Presupuesto>
+
+<section class="container">
+    @foreach (var presupuesto in Model)
+    {
+        
+        <section class="mt-4">
+            <h3 class="d-inline">@presupuesto.NombreDestinatario</h3>
+            <p class="d-inline">Presupuesto id# @presupuesto.IdPresupuesto</p>
+        </section>
+        
+        <div class="row bg-dark text-white p-2 rounded">
+            <!-- Encabezados de columnas -->
+            <div class="col-6 fw-bold">Producto</div>
+            <div class="col-3 fw-bold">Precio</div>
+            <div class="col-3 fw-bold">Cantidad</div>
+        </div>
+
+        <!-- Detalle del presupuesto -->
+        @if (presupuesto.Detalle != null && presupuesto.Detalle.Any())
+        {
+            @foreach (var detalle in presupuesto.Detalle)
+            {
+                <div class="row bg-light p-2 border-bottom">
+                    <div class="col-6">@detalle.Producto.Descripcion</div>
+                    <div class="col-3">@detalle.Producto.Precio.ToString("C")</div>
+                    <div class="col-3">@detalle.Cantidad</div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="row bg-light p-2 border-bottom">
+                <div class="col-12"><em>Sin productos</em></div>
+            </div>
+        }
+    }
+
+    <!-- Botón de regreso -->
+    <button type="button" class="btn btn-secondary mt-4">
+        <a href="@Url.Action("Index", "Presupuesto")" class="text-white text-decoration-none">Volver</a>
+    </button>
+</section>

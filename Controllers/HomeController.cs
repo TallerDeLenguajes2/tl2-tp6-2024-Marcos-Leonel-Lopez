@@ -24,11 +24,16 @@ public class HomeController : Controller
     //     System.Console.WriteLine("entra aqui");
     //     return View();
     // }
-        public IActionResult Producto()
-    {
-        System.Console.WriteLine("entra aqui en product");
-        return View();
-    }
+    // public IActionResult Producto()
+    // {
+    //     return View();
+    // }
+
+    // public IActionResult Presupuesto()
+    // {
+    //     return View();
+    // }
+
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
