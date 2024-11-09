@@ -68,31 +68,31 @@ public class PresupuestoController : Controller
     //     return RedirectToAction("GetAll");
     // }
 
-    // [HttpGet]
-    // public IActionResult Delete(int id)
-    // {
-    //     var producto = _productoRepository.GetById(id); // Busca el producto por ID
-    //     if (producto == null)
-    //     {
-    //         ViewData["ErrorMessage"] = "El producto con el ID proporcionado no existe.";
-    //         return View("Error"); // Si el producto no se encuentra, redirige a una página de error
-    //     }
-    //     return View(producto); // Si se encuentra, lo pasa a la vista para su edición
-    // }
+    [HttpGet]
+    public IActionResult Delete(int id)
+    {
+        var presupuestos = _presupuestoRepository.GetById(id); // Busca el producto por ID
+        if (presupuestos == null)
+        {
+            ViewData["ErrorMessage"] = "El presupuesto con el ID proporcionado no existe.";
+            return View("Error");
+        }
+        return View(presupuestos);
+    }
 
-    // [HttpPost]
-    // public IActionResult Delete(Producto producto , int id)
-    // {
-    //     _productoRepository.Delete(id);
-    //     return RedirectToAction("GetAll");
+    [HttpPost]
+    public IActionResult Delete(Presupuesto presupuesto , int id)
+    {
+        _presupuestoRepository.Remove(id);
+        return RedirectToAction("GetAll");
         
-    // }
+    }
 
 
 
-    // [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    // public IActionResult Error()
-    // {
-    //     return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-    // }
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Error()
+    {
+        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
 }
