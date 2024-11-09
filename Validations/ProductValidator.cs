@@ -1,6 +1,6 @@
 using FluentValidation;
 
-public class ProductValidator : AbstractValidator<Product>
+public class ProductValidator : AbstractValidator<Producto>
 {
     public ProductValidator(){
         RuleFor(p => p.Descripcion).NotNull().NotEmpty();

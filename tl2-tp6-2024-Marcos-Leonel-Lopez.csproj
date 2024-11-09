@@ -7,7 +7,11 @@
     <RootNamespace>tl2_tp6_2024_Marcos_Leonel_Lopez</RootNamespace>
   </PropertyGroup>
 
+<!-- falta agregarlalinea para actualizar la bd al compilar -->
   <ItemGroup>
+    <None Update="db\Tienda.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="Microsoft.Data.SQLite" Version="8.0.10" />
   </ItemGroup>

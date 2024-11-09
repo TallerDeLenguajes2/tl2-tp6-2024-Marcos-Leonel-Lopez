@@ -1,0 +1,29 @@
+@{
+    ViewData["Title"] = "Crear un producto";
+}
+@model Producto
+
+<form asp-controller="Producto" asp-action="Update" method="post" enctype="multipart/form-data">
+        <section class="d-flex flex-column">
+            <section class=" d-flex justify-content-start mb-2">
+                <input type="hidden" name="id" value="@Model.IdProducto" />
+                <section class="me-3 ">
+                    <label for="descripcion" class="form-label">Descripcion</label>
+                    <input type="text" name="descripcion" id="descripcion" class="form-control" asp-form="@Model.Descripcion" value="@Model.Descripcion">
+                </section>
+                <section class="me-3">
+                    <label for="precio" class="form-label">Precio</label>
+                    <input type="number" name="precio" id="precio" class="form-control" asp-form="@Model.Precio" value="@Model.Precio">
+                </section>
+            </section>
+            <section class="d-flex justify-content-start mb-2 ">
+                <button type="button" class="btn btn-secondary me-1"> <a asp-controller="Producto" asp-action="Index">Volver</a></button>
+                <button type="submit" class="btn btn-primary ms-1">CREAR</button>
+            </section>
+        </section>
+</form>
+
+
+
+
+

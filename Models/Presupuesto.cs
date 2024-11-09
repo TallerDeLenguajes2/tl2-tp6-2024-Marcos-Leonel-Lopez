@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 public class Presupuesto
 {
     private int idPresupuesto;
@@ -5,11 +7,11 @@ public class Presupuesto
     private List<PresupuestosDetalle> detalle;
     public Presupuesto()
     {
-
     }
-    public Presupuesto(string destinatario)
+    [JsonConstructor]
+    public Presupuesto(string NombreDestinatario)
     {
-        this.nombreDestinatario = destinatario;
+        this.nombreDestinatario = NombreDestinatario;
         this.detalle = new List<PresupuestosDetalle>();
     }
     public Presupuesto(int id, string destinatario, List<PresupuestosDetalle> detalles)
@@ -28,7 +30,7 @@ public class Presupuesto
         double monto = 0;
         foreach (var d in detalle)
         {
-            monto += (d.Cantidad * d.Product.Precio);
+            monto += (d.Cantidad * d.Producto.Precio);
         }
         return monto;
     }
@@ -37,12 +39,13 @@ public class Presupuesto
         double monto = 0;
         foreach (var d in detalle)
         {
-            monto += (d.Cantidad * d.Product.Precio);
+            monto += (d.Cantidad * d.Producto.Precio);
         }
         return monto * (1 + Constantes.IVA);
     }
 
-    public int CantidadProducts(){
+    public int CantidadProducts()
+    {
         int sum = 0;
         foreach (var d in detalle)
         {
@@ -50,5 +53,7 @@ public class Presupuesto
         }
         return sum;
     }
-
+        public void setId(int id){
+        this.idPresupuesto = id;
+    }
 }

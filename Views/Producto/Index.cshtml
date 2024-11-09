@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Gestión de Productos";
+}
+<section class="container">
+    <div class="text-left">
+        <h1>Gestión de Productos</h1>
+        <ul class="list-group">
+            <li class="list-group-item"><a asp-controller="Producto" asp-action="GetAll">Ver lista completa de
+                    productos</a>
+            </li>
+            <li class="list-group-item">
+                @* hace referencia al nombre de la funcion en el controlador *@
+                <form asp-controller="Producto" asp-action="GetById" method="get">
+                    <label for="productId">Ver producto por ID:</label>
+                    <input type="text" id="productId" name="id" required />
+                    <button type="submit">Ver Producto</button>
+                </form>
+            </li>
+            <li class="list-group-item">
+                <a asp-controller="Producto" asp-action="Create">Crear un nuevo producto</a>
+            </li>
+                <li class="list-group-item">
+                <form asp-controller="Producto" asp-action="Update" method="get">
+                    <label for="productId">Modificar un producto por ID:</label>
+                    <input type="text" id="productId" name="id" required />
+                    <button type="submit">Ir</button>
+                </form>
+            </li>
+            <li class="list-group-item">
+                <form asp-controller="Producto" asp-action="Delete" method="get">
+                    <label for="deleteId">Borrar producto por ID:</label>
+                    <input type="text" id="deleteId" name="id" required />
+                    <button type="submit">Borrar Producto</button>
+                </form>
+            </li>
+            @* <li class="list-group-item"><a href="@Url.Action("Edit", "Producto")">Modificar un producto</a></li> *@
+        </ul>
+    </div>
+</section>

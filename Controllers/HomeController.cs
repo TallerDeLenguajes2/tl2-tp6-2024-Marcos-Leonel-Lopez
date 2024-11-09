@@ -24,7 +24,7 @@ public class HomeController : Controller
     //     System.Console.WriteLine("entra aqui");
     //     return View();
     // }
-        public IActionResult Product()
+        public IActionResult Producto()
     {
         System.Console.WriteLine("entra aqui en product");
         return View();

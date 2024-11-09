@@ -1,0 +1,41 @@
+viewModel => objeto que solo transporta la informacion que necesita una clase de otra, en este caso el objeto que recibe una vista.
+
+
+repository
+public List<Producto> GetAll() 
+    {
+        -conexion
+        -consulta
+        -mapeo
+        return Productos;
+    }
+
+    ==>
+controller
+public IActionResult GetAll()
+    {
+        var productos = _productoRepository.GetAll();
+        return View(productos); 
+    }
+
+    tal vez pasamos informacion que no es necesaria, a esto vienen las reglas de negocio
+
+
+"viewModel" => objeto que se pana a la vista
+
+public class usuario{
+    ...
+}
+public class historialCompras{
+    ...
+}
+==>>>
+pubic class productViewModel{
+    ...
+    ...
+    public productViewModel(Usuario, productos){
+
+    }
+    ...
+    ...
+}

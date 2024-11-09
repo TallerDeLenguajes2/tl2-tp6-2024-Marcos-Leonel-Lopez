@@ -1,7 +1,7 @@
 @{
     ViewData["Title"] = "Todos los Productos";
 }
-@model List<Product>;
+@model List<Producto>;
 
 <section class="container" >
     <table class="table table-striped" id="tabla-productos">
@@ -13,7 +13,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach (Product producto in Model)
+        @foreach (Producto producto in Model)
         {
             <tr>
                 <td>@producto.IdProducto</td>
@@ -24,12 +24,6 @@
 
         </tbody>
     </table>
-    @* <ul>
-        @foreach (Product producto in Model)
-        {
-            <li>Id:@producto.IdProducto, Producto: @producto.Descripcion, Precio: @producto.Precio</li>
-        }
-    </ul> *@
-    <button type="button" class="btn btn-secondary"> <a href="@Url.Action("Index", "Product")" >Volver</a> </button>
+    <button type="button" class="btn btn-secondary"> <a href="@Url.Action("Index", "Producto")" >Volver</a> </button>
     
 </section> 
