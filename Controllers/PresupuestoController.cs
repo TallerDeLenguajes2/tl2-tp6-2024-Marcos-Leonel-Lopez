@@ -49,17 +49,17 @@ public class PresupuestoController : Controller
         return RedirectToAction("GetAll");
     }
 
-    // [HttpGet]
-    // public IActionResult Update(int id)
-    // {
-    //     var producto = _productoRepository.GetById(id); // Busca el producto por ID
-    //     if (producto == null)
-    //     {
-    //         ViewData["ErrorMessage"] = "El producto con el ID proporcionado no existe.";
-    //         return View("Error"); // Si el producto no se encuentra, redirige a una página de error
-    //     }
-    //     return View(producto); // Si se encuentra, lo pasa a la vista para su edición
-    // }
+    [HttpGet]
+    public IActionResult Edit(int id)
+    {
+        var presupuesto = _presupuestoRepository.GetById(id); // Busca el producto por ID
+        if (presupuesto == null)
+        {
+            ViewData["ErrorMessage"] = "El presupuesto con el ID proporcionado no existe.";
+            return View("Error");
+        }
+        return View(presupuesto);
+    }
 
     // [HttpPost]
     // public IActionResult Update(Producto productoEditad, int id)
@@ -85,10 +85,39 @@ public class PresupuestoController : Controller
     {
         _presupuestoRepository.Remove(id);
         return RedirectToAction("GetAll");
-        
     }
 
 
+
+
+
+
+
+
+[HttpPost]
+    public IActionResult RemoveProduct(int idPresupuesto, int idProducto)
+    {
+        bool result = _presupuestoRepository.RemoveProductFromDetails(idPresupuesto, idProducto);
+        if (!result)
+        {
+            ViewData["ErrorMessage"] = "No se pudo eliminar el producto.";
+            return View("Error");
+        }
+        return RedirectToAction("Edit", new { id = idPresupuesto });
+    }
+
+    // Acción para actualizar la cantidad de un producto en el detalle del presupuesto
+    [HttpPost]
+    public IActionResult UpdateProductQuantity(int idPresupuesto, int idProducto, int nuevaCantidad)
+    {
+        bool result = _presupuestoRepository.UpdateProductQuantityInDetails(idPresupuesto, idProducto, nuevaCantidad);
+        if (!result)
+        {
+            ViewData["ErrorMessage"] = "No se pudo actualizar la cantidad.";
+            return View("Error");
+        }
+        return RedirectToAction("Edit", new { id = idPresupuesto });
+    }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

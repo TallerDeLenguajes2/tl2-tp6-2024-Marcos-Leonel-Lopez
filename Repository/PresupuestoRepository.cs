@@ -262,6 +262,49 @@ namespace PresupuestoRepo
             }
             return nuevoPresupuesto;
         }
+
+
+
+
+
+        public bool RemoveProductFromDetails(int idPresupuesto, int idProducto)
+{
+    string queryDeleteDetalle = "DELETE FROM PresupuestosDetalle WHERE idPresupuesto = @idPresupuesto AND idProducto = @idProducto";
+
+    using (var connection = new SqliteConnection(cadenaConexion))
+    {
+        connection.Open();
+        using (var command = new SqliteCommand(queryDeleteDetalle, connection))
+        {
+            command.Parameters.AddWithValue("@idPresupuesto", idPresupuesto);
+            command.Parameters.AddWithValue("@idProducto", idProducto);
+            
+            int rowsAffected = command.ExecuteNonQuery();
+            return rowsAffected > 0; // True si se eliminó el producto
+        }
+    }
+}
+
+
+public bool UpdateProductQuantityInDetails(int idPresupuesto, int idProducto, int nuevaCantidad)
+{
+    string queryUpdateCantidad = "UPDATE PresupuestosDetalle SET Cantidad = @nuevaCantidad WHERE idPresupuesto = @idPresupuesto AND idProducto = @idProducto";
+
+    using (var connection = new SqliteConnection(cadenaConexion))
+    {
+        connection.Open();
+        using (var command = new SqliteCommand(queryUpdateCantidad, connection))
+        {
+            command.Parameters.AddWithValue("@idPresupuesto", idPresupuesto);
+            command.Parameters.AddWithValue("@idProducto", idProducto);
+            command.Parameters.AddWithValue("@nuevaCantidad", nuevaCantidad);
+            
+            int rowsAffected = command.ExecuteNonQuery();
+            return rowsAffected > 0; // True si se modificó la cantidad
+        }
+    }
+}
+
     }
 }
 

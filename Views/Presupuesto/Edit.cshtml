@@ -1,0 +1,49 @@
+@model Presupuesto
+
+<section class="container">
+    <h3>@Model.NombreDestinatario - Presupuesto #@Model.IdPresupuesto</h3>
+
+    <div class="row bg-dark text-white p-2 rounded">
+        <div class="col-4 fw-bold">Producto</div>
+        <div class="col-4 fw-bold">Precio</div>
+        <div class="col-2 fw-bold">Cantidad</div>
+        <div class="col-2 fw-bold">Acciones</div>
+    </div>
+
+    @if (Model.Detalle != null && Model.Detalle.Any())
+    {
+        @foreach (var detalle in Model.Detalle)
+        {
+            <div class="row bg-light p-2 border-bottom">
+                <div class="col-4">@detalle.Producto.Descripcion</div>
+                <div class="col-4">@detalle.Producto.Precio.ToString("C")</div>
+                <div class="col-2">
+                    <form asp-action="UpdateProductQuantity" method="post" class="d-flex">
+                        <input type="hidden" name="idPresupuesto" value="@Model.IdPresupuesto" />
+                        <input type="hidden" name="idProducto" value="@detalle.Producto.IdProducto" />
+                        <input type="number" name="nuevaCantidad" value="@detalle.Cantidad" class="form-control" min="1" />
+                        <button type="submit" class="btn btn-primary btn-sm ms-2">Actualizar</button>
+                    </form>
+                </div>
+                <div class="col-2">
+                    <form asp-action="RemoveProduct" method="post">
+                        <input type="hidden" name="idPresupuesto" value="@Model.IdPresupuesto" />
+                        <input type="hidden" name="idProducto" value="@detalle.Producto.IdProducto" />
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <i class="bi bi-trash"></i> Eliminar
+                        </button>
+                    </form>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="row bg-light p-2 border-bottom">
+            <div class="col-12"><em>Sin productos</em></div>
+        </div>
+    }
+
+    <!-- Botón de regreso -->
+    <a href="@Url.Action("Index", "Presupuesto")" class="btn btn-secondary mt-4">Volver</a>
+</section>
