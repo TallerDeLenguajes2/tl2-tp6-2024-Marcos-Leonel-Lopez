@@ -11,7 +11,7 @@
             <li class="list-group-item">
                 @* hace referencia al nombre de la funcion en el controlador *@
                 <form asp-controller="Presupuesto" asp-action="GetById" method="get">
-                    <label for="productId">Ver producto por ID:</label>
+                    <label for="productId">Ver presupuesto por ID:</label>
                     <input type="text" id="productId" name="id" required />
                     <button type="submit">Ver Presupuesto</button>
                 </form>
@@ -33,6 +33,13 @@
                     <button type="submit">Borrar Presupuesto</button>
                 </form>
             </li> 
+            <li class="list-group-item">
+                <form asp-controller="Presupuesto" asp-action="AddProductoEnPresupuesto" method="get">
+                    <label for="productId">Agregar producto al presupuesto:</label>
+                    <input type="text" id="productId" name="id" required />
+                    <button type="submit">Ir a Agregar Producto</button>
+                </form>
+            </li>
         </ul>
     </div>
 </section>

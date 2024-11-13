@@ -4,33 +4,36 @@
     <h3>@Model.NombreDestinatario - Presupuesto #@Model.IdPresupuesto</h3>
 
     <div class="row bg-dark text-white p-2 rounded">
-        <div class="col-4 fw-bold">Producto</div>
-        <div class="col-4 fw-bold">Precio</div>
-        <div class="col-2 fw-bold">Cantidad</div>
-        <div class="col-2 fw-bold">Acciones</div>
+        <div class="col-md-4 col-lg-4 fw-bold">Producto</div>
+        <div class="col-md-2 col-lg-2 fw-bold">Precio</div>
+        <div class="col-md-1 col-lg-2 fw-bold">Cantidad</div>
+        <div class="col-md-5 col-lg-4 fw-bold text-center">Acciones</div>
     </div>
 
     @if (Model.Detalle != null && Model.Detalle.Any())
     {
         @foreach (var detalle in Model.Detalle)
         {
-            <div class="row bg-light p-2 border-bottom">
-                <div class="col-4">@detalle.Producto.Descripcion</div>
-                <div class="col-4">@detalle.Producto.Precio.ToString("C")</div>
-                <div class="col-2">
-                    <form asp-action="UpdateProductQuantity" method="post" class="d-flex">
+            <div class="row bg-light p-2 border-bottom d-flex align-items-center">
+                <div class="col-md-4 col-lg-4">@detalle.Producto.Descripcion</div>
+                <div class="col-md-2 col-lg-2">@detalle.Producto.Precio.ToString("C")</div>
+                <div class="col-md-1 col-lg-2">@detalle.Cantidad</div>
+                <div class="col-md-5 col-lg-4 d-flex justify-content-evenly justify-content-between">
+                    <form asp-action="UpdateCantidad" method="post" class="d-flex col-md-6 col-lg-8">
                         <input type="hidden" name="idPresupuesto" value="@Model.IdPresupuesto" />
                         <input type="hidden" name="idProducto" value="@detalle.Producto.IdProducto" />
-                        <input type="number" name="nuevaCantidad" value="@detalle.Cantidad" class="form-control" min="1" />
-                        <button type="submit" class="btn btn-primary btn-sm ms-2">Actualizar</button>
+                        <input type="number" name="nuevaCantidad" value="@detalle.Cantidad" class="form-control text-center" min="1" />
+                        <button type="submit" class="btn btn-primary btn-sm ms-2 d-flex align-items-center px-md-4 px-lg-1">
+                            <i class="bi bi-pencil"></i> 
+                            <span class="d-none d-lg-inline">Actualizar</span>
+                        </button>
                     </form>
-                </div>
-                <div class="col-2">
-                    <form asp-action="RemoveProduct" method="post">
+                    <form asp-action="RemoveProducto" method="post" class="d-flex justify-content-center col-md-2 col-lg-4">
                         <input type="hidden" name="idPresupuesto" value="@Model.IdPresupuesto" />
                         <input type="hidden" name="idProducto" value="@detalle.Producto.IdProducto" />
-                        <button type="submit" class="btn btn-danger btn-sm">
-                            <i class="bi bi-trash"></i> Eliminar
+                        <button type="submit" class="btn btn-danger btn-sm px-md-3 px-lg-1 ">
+                            <i class="bi bi-trash"></i>
+                            <span class="d-none d-lg-inline">Eliminar</span>
                         </button>
                     </form>
                 </div>

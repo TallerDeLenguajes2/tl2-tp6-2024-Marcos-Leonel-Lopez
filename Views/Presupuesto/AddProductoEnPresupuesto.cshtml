@@ -1,0 +1,49 @@
+@model Presupuesto
+
+<section class="container">
+    <section class="mt-4 d-flex align-items-center">
+        <h3 class="d-inline">@Model.NombreDestinatario</h3>
+        <p class="d-inline ms-2">Presupuesto id# @Model.IdPresupuesto</p>
+        
+        <!-- Formulario para agregar producto -->
+        <form asp-action="AddProductoEnPresupuesto" method="post" class="ms-4 d-flex align-items-center">
+            <input type="hidden" name="idPresupuesto" value="@Model.IdPresupuesto" />
+            <label for="productId" class="me-2">ID Producto:</label>
+            <input type="number" id="productId" name="idProducto" class="form-control me-2" required />
+
+            <label for="cantidad" class="me-2">Cantidad:</label>
+            <input type="number" id="cantidad" name="cantidad" class="form-control me-2" min="1" required />
+
+            <button type="submit" class="btn btn-primary">Agregar Producto</button>
+        </form>
+    </section>
+
+    <!-- Encabezados de columnas -->
+    <div class="row bg-dark text-white p-2 rounded mt-4">
+        <div class="col-6 fw-bold">Producto</div>
+        <div class="col-3 fw-bold">Precio</div>
+        <div class="col-3 fw-bold">Cantidad</div>
+    </div>
+
+    <!-- Detalle del presupuesto -->
+    @if (Model.Detalle != null && Model.Detalle.Any())
+    {
+        @foreach (var detalle in Model.Detalle)
+        {
+            <div class="row bg-light p-2 border-bottom">
+                <div class="col-6">@detalle.Producto.Descripcion</div>
+                <div class="col-3">@detalle.Producto.Precio.ToString("C")</div>
+                <div class="col-3">@detalle.Cantidad</div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="row bg-light p-2 border-bottom">
+            <div class="col-12"><em>Sin productos</em></div>
+        </div>
+    }
+
+    <!-- Botón de regreso -->
+    <a href="@Url.Action("Index", "Presupuesto")" class="btn btn-secondary mt-4">Volver</a>
+</section>

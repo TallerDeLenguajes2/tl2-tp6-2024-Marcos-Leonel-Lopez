@@ -60,13 +60,30 @@ public class PresupuestoController : Controller
         }
         return View(presupuesto);
     }
+    [HttpPost]
+    public IActionResult RemoveProducto(int idPresupuesto, int idProducto)
+    {
+        bool result = _presupuestoRepository.RemoveProducto(idPresupuesto, idProducto);
+        if (!result)
+        {
+            ViewData["ErrorMessage"] = "No se pudo eliminar el producto.";
+            return View("Error");
+        }
+        return RedirectToAction("Edit", new { id = idPresupuesto });
+    }
 
-    // [HttpPost]
-    // public IActionResult Update(Producto productoEditad, int id)
-    // {
-    //     var producto = _productoRepository.Update(productoEditad, id);
-    //     return RedirectToAction("GetAll");
-    // }
+    // Acción para actualizar la cantidad de un producto en el detalle del presupuesto
+    [HttpPost]
+    public IActionResult UpdateCantidad(int idPresupuesto, int idProducto, int nuevaCantidad)
+    {
+        bool result = _presupuestoRepository.UpdateCantidadEnDetalle(idPresupuesto, idProducto, nuevaCantidad);
+        if (!result)
+        {
+            ViewData["ErrorMessage"] = "No se pudo actualizar la cantidad.";
+            return View("Error");
+        }
+        return RedirectToAction("Edit", new { id = idPresupuesto });
+    }
 
     [HttpGet]
     public IActionResult Delete(int id)
@@ -81,43 +98,39 @@ public class PresupuestoController : Controller
     }
 
     [HttpPost]
-    public IActionResult Delete(Presupuesto presupuesto , int id)
+    public IActionResult Delete(Presupuesto presupuesto, int id)
     {
         _presupuestoRepository.Remove(id);
         return RedirectToAction("GetAll");
     }
 
+    [HttpGet]
 
-
-
-
-
-
-
-[HttpPost]
-    public IActionResult RemoveProduct(int idPresupuesto, int idProducto)
+    public IActionResult AddProductoEnPresupuesto(int id)
     {
-        bool result = _presupuestoRepository.RemoveProductFromDetails(idPresupuesto, idProducto);
-        if (!result)
+        var presupuestos = _presupuestoRepository.GetById(id); // Busca el producto por ID
+        if (presupuestos == null)
         {
-            ViewData["ErrorMessage"] = "No se pudo eliminar el producto.";
+            ViewData["ErrorMessage"] = "El presupuesto con el ID proporcionado no existe.";
             return View("Error");
         }
-        return RedirectToAction("Edit", new { id = idPresupuesto });
+        return View(presupuestos);
     }
 
-    // Acción para actualizar la cantidad de un producto en el detalle del presupuesto
     [HttpPost]
-    public IActionResult UpdateProductQuantity(int idPresupuesto, int idProducto, int nuevaCantidad)
-    {
-        bool result = _presupuestoRepository.UpdateProductQuantityInDetails(idPresupuesto, idProducto, nuevaCantidad);
-        if (!result)
-        {
-            ViewData["ErrorMessage"] = "No se pudo actualizar la cantidad.";
-            return View("Error");
-        }
-        return RedirectToAction("Edit", new { id = idPresupuesto });
+    public IActionResult AddProductoEnPresupuesto(int idPresupuesto, int idProducto, int cantidad){
+        Presupuesto result = _presupuestoRepository.AddProductoEnPresupuesto(idPresupuesto, idProducto, cantidad);
+        return RedirectToAction("AddProductoEnPresupuesto", new { id = idPresupuesto });
+
     }
+
+
+
+
+
+
+
+
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

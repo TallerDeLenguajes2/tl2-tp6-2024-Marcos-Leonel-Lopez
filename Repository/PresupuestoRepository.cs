@@ -198,16 +198,16 @@ namespace PresupuestoRepo
             }
             return false;
         }
-        public Presupuesto Update(PresupuestosDetalle pd, int id)
+        public Presupuesto AddProductoEnPresupuesto(int idPresupuesto, int idProd, int cantidad)
         {
             ProductoRepository _prodRepo = new ProductoRepository(); // instancia para buscar producto
 
             Presupuesto nuevoPresupuesto = new Presupuesto();
-            var prodBuscado = _prodRepo.GetById(pd.Producto.IdProducto);
+            var prodBuscado = _prodRepo.GetById(idProd);
 
             if (prodBuscado != null)
             {
-                // Primero, verificar si ya existe el par (idPresupuesto, idProducto)
+        //         // Primero, verificar si ya existe el par (idPresupuesto, idProducto)
                 string queryCheckExistence = "SELECT COUNT(*) FROM PresupuestosDetalle WHERE idPresupuesto = @idPresupuesto AND idProducto = @idProducto";
                 bool existe = false;
 
@@ -216,15 +216,14 @@ namespace PresupuestoRepo
                     connection.Open();
                     using (var command = new SqliteCommand(queryCheckExistence, connection))
                     {
-                        command.Parameters.AddWithValue("@idPresupuesto", id);
-                        command.Parameters.AddWithValue("@idProducto", pd.Producto.IdProducto);
+                        command.Parameters.AddWithValue("@idPresupuesto", idPresupuesto);
+                        command.Parameters.AddWithValue("@idProducto", idProd);
 
                         var count = Convert.ToInt32(command.ExecuteScalar());
                         existe = count > 0; // Si existe al menos una tupla, entonces existe = true
                     }
                     connection.Close();
                 }
-
                 // Si existe, se hace un UPDATE, si no, se hace un INSERT
                 if (existe)
                 {
@@ -234,9 +233,9 @@ namespace PresupuestoRepo
                         connection.Open();
                         using (var command = new SqliteCommand(queryUpdateDetalle, connection))
                         {
-                            command.Parameters.AddWithValue("@idPresupuesto", id);
-                            command.Parameters.AddWithValue("@idProducto", pd.Producto.IdProducto);
-                            command.Parameters.AddWithValue("@cantidad", pd.Cantidad);
+                            command.Parameters.AddWithValue("@idPresupuesto", idPresupuesto);
+                            command.Parameters.AddWithValue("@idProducto", idProd);
+                            command.Parameters.AddWithValue("@cantidad", cantidad);
                             command.ExecuteNonQuery();
                         }
                         connection.Close();
@@ -250,15 +249,15 @@ namespace PresupuestoRepo
                         connection.Open();
                         using (var command = new SqliteCommand(queryInsertDetalle, connection))
                         {
-                            command.Parameters.AddWithValue("@idPresupuesto", id);
-                            command.Parameters.AddWithValue("@idProducto", pd.Producto.IdProducto);
-                            command.Parameters.AddWithValue("@cantidad", pd.Cantidad);
+                            command.Parameters.AddWithValue("@idPresupuesto", idPresupuesto);
+                            command.Parameters.AddWithValue("@idProducto", idProd);
+                            command.Parameters.AddWithValue("@cantidad", cantidad);
                             command.ExecuteNonQuery();
                         }
                         connection.Close();
                     }
                 }
-                nuevoPresupuesto = this.GetById(id);
+                nuevoPresupuesto = this.GetById(idPresupuesto);
             }
             return nuevoPresupuesto;
         }
@@ -267,43 +266,43 @@ namespace PresupuestoRepo
 
 
 
-        public bool RemoveProductFromDetails(int idPresupuesto, int idProducto)
-{
-    string queryDeleteDetalle = "DELETE FROM PresupuestosDetalle WHERE idPresupuesto = @idPresupuesto AND idProducto = @idProducto";
-
-    using (var connection = new SqliteConnection(cadenaConexion))
-    {
-        connection.Open();
-        using (var command = new SqliteCommand(queryDeleteDetalle, connection))
+        public bool RemoveProducto(int idPresupuesto, int idProducto)
         {
-            command.Parameters.AddWithValue("@idPresupuesto", idPresupuesto);
-            command.Parameters.AddWithValue("@idProducto", idProducto);
-            
-            int rowsAffected = command.ExecuteNonQuery();
-            return rowsAffected > 0; // True si se eliminó el producto
+            string queryDeleteDetalle = "DELETE FROM PresupuestosDetalle WHERE idPresupuesto = @idPresupuesto AND idProducto = @idProducto";
+
+            using (var connection = new SqliteConnection(cadenaConexion))
+            {
+                connection.Open();
+                using (var command = new SqliteCommand(queryDeleteDetalle, connection))
+                {
+                    command.Parameters.AddWithValue("@idPresupuesto", idPresupuesto);
+                    command.Parameters.AddWithValue("@idProducto", idProducto);
+
+                    int rowsAffected = command.ExecuteNonQuery();
+                    return rowsAffected > 0; // True si se eliminó el producto
+                }
+            }
         }
-    }
-}
 
 
-public bool UpdateProductQuantityInDetails(int idPresupuesto, int idProducto, int nuevaCantidad)
-{
-    string queryUpdateCantidad = "UPDATE PresupuestosDetalle SET Cantidad = @nuevaCantidad WHERE idPresupuesto = @idPresupuesto AND idProducto = @idProducto";
-
-    using (var connection = new SqliteConnection(cadenaConexion))
-    {
-        connection.Open();
-        using (var command = new SqliteCommand(queryUpdateCantidad, connection))
+        public bool UpdateCantidadEnDetalle(int idPresupuesto, int idProducto, int nuevaCantidad)
         {
-            command.Parameters.AddWithValue("@idPresupuesto", idPresupuesto);
-            command.Parameters.AddWithValue("@idProducto", idProducto);
-            command.Parameters.AddWithValue("@nuevaCantidad", nuevaCantidad);
-            
-            int rowsAffected = command.ExecuteNonQuery();
-            return rowsAffected > 0; // True si se modificó la cantidad
+            string queryUpdateCantidad = "UPDATE PresupuestosDetalle SET Cantidad = @nuevaCantidad WHERE idPresupuesto = @idPresupuesto AND idProducto = @idProducto";
+
+            using (var connection = new SqliteConnection(cadenaConexion))
+            {
+                connection.Open();
+                using (var command = new SqliteCommand(queryUpdateCantidad, connection))
+                {
+                    command.Parameters.AddWithValue("@idPresupuesto", idPresupuesto);
+                    command.Parameters.AddWithValue("@idProducto", idProducto);
+                    command.Parameters.AddWithValue("@nuevaCantidad", nuevaCantidad);
+
+                    int rowsAffected = command.ExecuteNonQuery();
+                    return rowsAffected > 0; // True si se modificó la cantidad
+                }
+            }
         }
-    }
-}
 
     }
 }
