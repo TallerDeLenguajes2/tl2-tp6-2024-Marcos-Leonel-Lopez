@@ -7,10 +7,12 @@ namespace tl2_tp6_2024_Marcos_Leonel_Lopez.Controllers;
 public class PresupuestoController : Controller
 {
     private readonly PresupuestoRepo.PresupuestoRepository _presupuestoRepository;
+    private readonly ClienteRepo.ClienteRepository _clienteRepository;
 
-    public PresupuestoController(PresupuestoRepo.PresupuestoRepository presupuestoRepository)
+    public PresupuestoController(PresupuestoRepo.PresupuestoRepository presupuestoRepository, ClienteRepo.ClienteRepository clienteRepository)
     {
         _presupuestoRepository = presupuestoRepository;
+        _clienteRepository = clienteRepository;
     }
 
     // ejecutar con: dotnet watch
@@ -37,17 +39,42 @@ public class PresupuestoController : Controller
     }
 
     [HttpGet]
+    // public IActionResult Create()
+    // {
+    //     return View(new Presupuesto());
+    // }
     public IActionResult Create()
     {
-        return View(new Presupuesto());
+        var viewModel = new PresupuestoViewModel
+        {
+            Presupuesto = new Presupuesto(),
+            Clientes = _clienteRepository.GetAll()
+        };
+        return View(viewModel);
     }
 
     [HttpPost]
-    public IActionResult Create(Presupuesto nuevoPresupuesto)
-    {
-        var producto = _presupuestoRepository.Create(nuevoPresupuesto);
-        return RedirectToAction("GetAll");
-    }
+    // public IActionResult Create(Presupuesto nuevoPresupuesto)
+    // {
+    //     var producto = _presupuestoRepository.Create(nuevoPresupuesto);
+    //     return RedirectToAction("GetAll");
+    // }
+    // public IActionResult Create(PresupuestoViewModel viewModel)
+    // {
+    //     _presupuestoRepository.Create(viewModel.Presupuesto);
+    //     return RedirectToAction("GetAll");
+    // }
+    [HttpPost]
+public IActionResult Create(PresupuestoViewModel viewModel)
+{
+    // Asignar el cliente seleccionado al destinatario del presupuesto
+    viewModel.Presupuesto.Destinatario = new Cliente { IdCliente = viewModel.Presupuesto.Destinatario.IdCliente };
+
+    // Crear el presupuesto usando el repositorio
+    _presupuestoRepository.Create(viewModel.Presupuesto);
+    return RedirectToAction("GetAll");
+}
+
 
     [HttpGet]
     public IActionResult Edit(int id)
@@ -118,7 +145,8 @@ public class PresupuestoController : Controller
     }
 
     [HttpPost]
-    public IActionResult AddProductoEnPresupuesto(int idPresupuesto, int idProducto, int cantidad){
+    public IActionResult AddProductoEnPresupuesto(int idPresupuesto, int idProducto, int cantidad)
+    {
         Presupuesto result = _presupuestoRepository.AddProductoEnPresupuesto(idPresupuesto, idProducto, cantidad);
         return RedirectToAction("AddProductoEnPresupuesto", new { id = idPresupuesto });
 

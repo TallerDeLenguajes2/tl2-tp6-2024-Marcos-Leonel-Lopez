@@ -5,6 +5,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<ProductRepo.ProductoRepository>();
 builder.Services.AddScoped<PresupuestoRepo.PresupuestoRepository>();
+builder.Services.AddScoped<ClienteRepo.ClienteRepository>();
 builder.Services.AddScoped<ProductValidator>();
 
 var app = builder.Build();

@@ -1,0 +1,31 @@
+@{
+    ViewData["Title"] = "Todos los Clientes";
+}
+@model List<Cliente>;
+
+<section class="container">
+    <table class="table table-hover" id="tabla-productos">
+        <thead>
+            <tr>
+                <th scope="col" class="col-1">Id</th>
+                <th scope="col" class="col-3">Nombre</th>
+                <th scope="col" class="col-3">Email</th>
+                <th scope="col" class="col-3">Telefono</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Cliente cliente in Model)
+            {
+                <tr>
+                    <td scope="col" class="col-1">@cliente.IdCliente</td>
+                    <td scope="col" class="col-3">@cliente.NombreCliente</td>
+                    <td scope="col" class="col-3">@cliente.Email</td>
+                    <td scope="col" class="col-3">@cliente.Telefono</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+    <a href="@Url.Action("Index", "Cliente")" class="btn btn-secondary mt-4 text-white">Volver</a>
+
+</section>

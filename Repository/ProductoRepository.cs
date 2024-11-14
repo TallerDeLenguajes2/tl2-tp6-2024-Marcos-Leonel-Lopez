@@ -44,7 +44,10 @@ namespace ProductRepo
                 {
                     while (reader.Read())
                     {
-                        productos.Add(new Producto(Convert.ToInt32(reader["idProducto"]), reader["Descripcion"].ToString(), Convert.ToInt32(reader["Precio"])));
+                        productos.Add(new Producto(
+                            Convert.ToInt32(reader["idProducto"]),
+                            reader["Descripcion"].ToString(),
+                            Convert.ToInt32(reader["Precio"])));
                     }
                 };
                 connection.Close();

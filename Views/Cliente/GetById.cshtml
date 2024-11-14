@@ -1,0 +1,30 @@
+@{
+    ViewData["Title"] = "Clientes";
+}
+@model Cliente;
+
+<section class="container">
+
+    <!-- Tabla de productos en el presupuesto -->
+    <table class="table table-hover" id="tabla-productos">
+        <thead>
+            <tr>
+                <th scope="col" class="col-1">Id</th>
+                <th scope="col" class="col-3">Nombre</th>
+                <th scope="col" class="col-3">Email</th>
+                <th scope="col" class="col-3">Telefono</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td scope="col" class="col-1">@Model.IdCliente</td>
+                <td scope="col" class="col-3">@Model.NombreCliente</td>
+                <td scope="col" class="col-3">@Model.Email</td>
+                <td scope="col" class="col-3">@Model.Telefono</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Botón de regreso -->
+    <a href="@Url.Action("Index", "Cliente")" class="btn btn-secondary mt-4 text-white">Volver</a>
+</section>

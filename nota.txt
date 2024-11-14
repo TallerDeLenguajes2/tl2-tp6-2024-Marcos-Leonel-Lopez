@@ -39,3 +39,8 @@ pubic class productViewModel{
     ...
     ...
 }
+
+
+para eliminar un cliente con presupuesto, primero debo eliminar el PresupuestoDetalle => Presupuesto => Cleinte
+
+para elimianr un presupuesto, seprimero debo eliminar PresupuestoDetalle => Presupuesto  |ECHO|
