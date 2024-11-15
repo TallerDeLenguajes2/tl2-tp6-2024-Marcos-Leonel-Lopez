@@ -43,6 +43,46 @@ public class ClienteController : Controller
         return RedirectToAction("GetAll");
     }
 
+    [HttpGet]
+    public IActionResult Delete(int id)
+    {
+        var cliente = _clienteRepository.GetById(id); // Busca el producto por ID
+        if (cliente == null)
+        {
+            ViewData["ErrorMessage"] = "El cliente con el ID proporcionado no existe.";
+            return View("Error");
+        }
+        return View(cliente);
+    }
+
+    [HttpPost]
+    public IActionResult Delete(Cliente cliente, int id)
+    {
+        _clienteRepository.Delete(id);
+        return RedirectToAction("GetAll");
+    }
+
+    [HttpGet]
+    public IActionResult Update(int id)
+    {
+        var cliente = _clienteRepository.GetById(id);
+        if (cliente == null)
+        {
+            ViewData["ErrorMessage"] = "El cliente con el ID proporcionado no existe.";
+            return View("Error");
+        }
+        return View(cliente);
+    }
+
+    [HttpPost]
+    public IActionResult Update(Cliente cliente,int id)
+    {
+        _clienteRepository.Update(cliente,id);
+        return RedirectToAction("GetAll");
+    }
+
+
+
 
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

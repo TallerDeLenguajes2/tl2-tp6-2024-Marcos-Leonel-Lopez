@@ -29,30 +29,30 @@ namespace ClienteRepo
             }
             return result;
         }
-public Cliente GetById(int idCliente)
-{
-    Cliente result = null; // Usamos null para indicar que no se encontró el cliente
-    string query = "SELECT idCliente, Nombre, Email, COALESCE(Telefono, '-') as Telefono FROM Clientes WHERE idCliente = @id";
-    using (var connection = new SqliteConnection(cadenaConexion))
-    {
-        SqliteCommand command = new SqliteCommand(query, connection);
-        command.Parameters.Add(new SqliteParameter("@id", idCliente));
-        connection.Open();
-        using (SqliteDataReader reader = command.ExecuteReader())
+        public Cliente GetById(int idCliente)
         {
-            if (reader.Read()) // Verifica si hay al menos una fila en el resultado
+            Cliente result = null; // Usamos null para indicar que no se encontró el cliente
+            string query = "SELECT idCliente, Nombre, Email, COALESCE(Telefono, '-') as Telefono FROM Clientes WHERE idCliente = @id";
+            using (var connection = new SqliteConnection(cadenaConexion))
             {
-                result = new Cliente(); // Inicializamos el cliente si hay datos
-                result.setId(reader.GetInt32(0)); // Asumiendo que idCliente es la primera columna
-                result.NombreCliente = reader["Nombre"].ToString();
-                result.Email = reader["Email"].ToString();
-                result.Telefono = reader["Telefono"].ToString();
+                SqliteCommand command = new SqliteCommand(query, connection);
+                command.Parameters.Add(new SqliteParameter("@id", idCliente));
+                connection.Open();
+                using (SqliteDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read()) // Verifica si hay al menos una fila en el resultado
+                    {
+                        result = new Cliente(); // Inicializamos el cliente si hay datos
+                        result.setId(reader.GetInt32(0)); // Asumiendo que idCliente es la primera columna
+                        result.NombreCliente = reader["Nombre"].ToString();
+                        result.Email = reader["Email"].ToString();
+                        result.Telefono = reader["Telefono"].ToString();
+                    }
+                }
+                connection.Close();
             }
+            return result; // Devolverá null si no se encontró ningún registro
         }
-        connection.Close();
-    }
-    return result; // Devolverá null si no se encontró ningún registro
-}
 
         public Cliente Create(Cliente nuevoCliente)
         {
@@ -75,16 +75,55 @@ public Cliente GetById(int idCliente)
             return cliente;
         }
 
-        public bool Remove(int idCliente)
+        public bool Delete(int idCliente)
         {
-            string query = "DELETE FROM Clientes WHERE idCliente = @id";
+            int idPresupuestoBuscado = 0;
+            string querySELECTPresupuesto = "SELECT idPresupuesto FROM Presupuestos WHERE idCliente = @idClienteSELECT";
+            string queryPresupuestoDetalle = "DELETE FROM PresupuestosDetalle WHERE idPresupuesto = @idPresupuestoPD";
+            string queryDELETEPresupuesto = "DELETE FROM Presupuestos WHERE idPresupuesto = @idPresupuesto";
+            string queryCiente = "DELETE FROM Clientes WHERE idCliente = @id";
+            using (var connection = new SqliteConnection(cadenaConexion))
+            {
+                SqliteCommand commandSP = new SqliteCommand(querySELECTPresupuesto, connection);
+                commandSP.Parameters.Add(new SqliteParameter("@idClienteSELECT", idCliente));
+                connection.Open();
+                using (SqliteDataReader reader = commandSP.ExecuteReader())
+                {
+                    if (reader.Read()) // Verifica si hay al menos una fila en el resultado
+                    {
+                        idPresupuestoBuscado = Convert.ToInt32(reader["idPresupuesto"]);
+                    }
+                    connection.Close();
+                }
+            }
             using (var connection = new SqliteConnection(cadenaConexion))
             {
                 connection.Open();
-                using (SqliteCommand command = new SqliteCommand(query, connection))
+                using (SqliteCommand commandDPD = new SqliteCommand(queryPresupuestoDetalle, connection))
                 {
-                    command.Parameters.Add(new SqliteParameter("@id", idCliente));
-                    int rowsAffected = command.ExecuteNonQuery();
+                    commandDPD.Parameters.Add(new SqliteParameter("@idPresupuestoPD", idPresupuestoBuscado));
+                    commandDPD.ExecuteNonQuery();
+                    connection.Close();
+                }
+            }
+
+            using (var connection = new SqliteConnection(cadenaConexion))
+            {
+                connection.Open();
+                using (SqliteCommand commandDP = new SqliteCommand(queryDELETEPresupuesto, connection))
+                {
+                    commandDP.Parameters.Add(new SqliteParameter("@idPresupuesto", idPresupuestoBuscado));
+                    commandDP.ExecuteNonQuery();
+                    connection.Close();
+                }
+            }
+            using (var connection = new SqliteConnection(cadenaConexion))
+            {
+                connection.Open();
+                using (SqliteCommand commandDC = new SqliteCommand(queryCiente, connection))
+                {
+                    commandDC.Parameters.Add(new SqliteParameter("@id", idCliente));
+                    int rowsAffected = commandDC.ExecuteNonQuery();
                     connection.Close();
                     return rowsAffected > 0;
                 }
@@ -100,7 +139,7 @@ public Cliente GetById(int idCliente)
                 {
                     command.Parameters.Add(new SqliteParameter("@nomb", cliente.NombreCliente));
                     command.Parameters.Add(new SqliteParameter("@email", cliente.Email));
-                    command.Parameters.Add(new SqliteParameter("@tel", cliente.Telefono));
+                    command.Parameters.Add(new SqliteParameter("@tel", string.IsNullOrEmpty(cliente.Telefono) ? DBNull.Value : cliente.Telefono));
                     command.Parameters.Add(new SqliteParameter("@id", idCliente));
                     int rowsAffected = command.ExecuteNonQuery();
                     connection.Close();
@@ -113,20 +152,20 @@ public Cliente GetById(int idCliente)
                 return null;
             }
         }
-        public bool Delete(int idCliente)
-        {
-            string query = "DELETE FROM Clientes WHERE idCliente = @id";
-            using (var connection = new SqliteConnection(cadenaConexion))
-            {
-                connection.Open();
-                using (SqliteCommand command = new SqliteCommand(query, connection))
-                {
-                    command.Parameters.Add(new SqliteParameter("@id", idCliente));
-                    int rowsAffected = command.ExecuteNonQuery();
-                    connection.Close();
-                    return rowsAffected > 0;
-                }
-            }
-        }
+        // public bool Delete(int idCliente)
+        // {
+        //     string query = "DELETE FROM Clientes WHERE idCliente = @id";
+        //     using (var connection = new SqliteConnection(cadenaConexion))
+        //     {
+        //         connection.Open();
+        //         using (SqliteCommand command = new SqliteCommand(query, connection))
+        //         {
+        //             command.Parameters.Add(new SqliteParameter("@id", idCliente));
+        //             int rowsAffected = command.ExecuteNonQuery();
+        //             connection.Close();
+        //             return rowsAffected > 0;
+        //         }
+        //     }
+        // }
     }
 }

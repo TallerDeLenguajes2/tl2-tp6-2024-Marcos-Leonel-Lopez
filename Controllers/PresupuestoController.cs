@@ -77,7 +77,7 @@ public IActionResult Create(PresupuestoViewModel viewModel)
 
 
     [HttpGet]
-    public IActionResult Edit(int id)
+    public IActionResult Update(int id)
     {
         var presupuesto = _presupuestoRepository.GetById(id); // Busca el producto por ID
         if (presupuesto == null)
@@ -96,7 +96,7 @@ public IActionResult Create(PresupuestoViewModel viewModel)
             ViewData["ErrorMessage"] = "No se pudo eliminar el producto.";
             return View("Error");
         }
-        return RedirectToAction("Edit", new { id = idPresupuesto });
+        return RedirectToAction("Update", new { id = idPresupuesto });
     }
 
     // Acción para actualizar la cantidad de un producto en el detalle del presupuesto
@@ -109,7 +109,7 @@ public IActionResult Create(PresupuestoViewModel viewModel)
             ViewData["ErrorMessage"] = "No se pudo actualizar la cantidad.";
             return View("Error");
         }
-        return RedirectToAction("Edit", new { id = idPresupuesto });
+        return RedirectToAction("Update", new { id = idPresupuesto });
     }
 
     [HttpGet]

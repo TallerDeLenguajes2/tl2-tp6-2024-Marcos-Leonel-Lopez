@@ -1,0 +1,28 @@
+@{
+    ViewData["Title"] = "Editar un Cliente";
+}
+@model Cliente
+
+<form asp-controller="Cliente" asp-action="Update" method="post" enctype="multipart/form-data">
+        <section class="d-flex flex-column">
+            <section class=" d-flex justify-content-start mb-2">
+                <input type="hidden" name="id" value="@Model.IdCliente">
+                <section class="me-3 ">
+                    <label for="nombreCliente" class="form-label">Nombre</label>
+                    <input type="text" name="nombreCliente" id="nombreCliente" class="form-control" asp-form="@Model.NombreCliente" value="@Model.NombreCliente" >
+                </section>
+                <section class="me-3 ">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="text" name="email" id="email" class="form-control" asp-form="@Model.Email" value="@Model.Email" >
+                </section>
+                <section class="me-3 ">
+                    <label for="telefono" class="form-label">Telefono</label>
+                    <input type="text" name="telefono" id="telefono" class="form-control" asp-form="@Model.Telefono" value="@Model.Telefono" >
+                </section>
+            </section>
+            <section class="d-flex justify-content-start mb-2 ">
+                <button type="button" class="btn btn-secondary me-1"> <a asp-controller="Cliente" asp-action="Index">Volver</a></button>
+                <button type="submit" class="btn btn-primary ms-1">EDITAR</button>
+            </section>
+        </section>
+</form>

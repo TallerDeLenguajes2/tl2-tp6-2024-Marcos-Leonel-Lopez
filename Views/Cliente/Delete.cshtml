@@ -1,0 +1,40 @@
+@{
+    ViewData["Title"] = "Clientes";
+}
+@model Cliente;
+
+<section class="container">
+
+    <!-- Tabla de productos en el presupuesto -->
+    <table class="table table-hover" id="tabla-productos">
+        <thead>
+            <tr>
+                <th scope="col" class="col-1">Id</th>
+                <th scope="col" class="col-3">Nombre</th>
+                <th scope="col" class="col-3">Email</th>
+                <th scope="col" class="col-3">Telefono</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td scope="col" class="col-1">@Model.IdCliente</td>
+                <td scope="col" class="col-3">@Model.NombreCliente</td>
+                <td scope="col" class="col-3">@Model.Email</td>
+                <td scope="col" class="col-3">@Model.Telefono</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Botón de regreso -->
+    <form asp-controller="Cliente" asp-action="Delete" method="post" enctype="multipart/form-data">
+        <section class="d-flex flex-column">
+            <section class=" d-flex justify-content-start mb-2">
+                <input type="hidden" name="id" value="@Model.IdCliente">
+            </section>
+            <section class="d-flex justify-content-start mb-2 ">
+                <button type="button" class="btn btn-secondary me-1"> <a asp-controller="Cliente" asp-action="Index">Volver</a></button>
+                <button type="submit" class="btn btn-danger  ms-1">ELIMINAR</button>
+            </section>
+        </section>
+</form>
+</section>

@@ -216,7 +216,7 @@ namespace PresupuestoRepo
 
             if (prodBuscado != null)
             {
-        //         // Primero, verificar si ya existe el par (idPresupuesto, idProducto)
+                //         // Primero, verificar si ya existe el par (idPresupuesto, idProducto)
                 string queryCheckExistence = "SELECT COUNT(*) FROM PresupuestosDetalle WHERE idPresupuesto = @idPresupuesto AND idProducto = @idProducto";
                 bool existe = false;
 
