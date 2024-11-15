@@ -1,21 +1,38 @@
-@model Presupuesto
+@model AgregarProductoViewModel
 
 <section class="container">
     <section class="mt-4 d-flex align-items-center">
-        <h3 class="d-inline">#@Model.Destinatario.IdCliente - @Model.Destinatario.NombreCliente</h3>
-        <p class="d-inline ms-2">Presupuesto id# @Model.IdPresupuesto</p>
-        
+        <section class="col-4">
+            <h3 class="d-inline">@Model.Presupuesto.Destinatario.IdCliente
+                (id#@Model.Presupuesto.Destinatario.IdCliente)</h3>
+            <h6 class="d-inline">Presupuesto id# @Model.Presupuesto.IdPresupuesto</h6>
+        </section>
+        <section class="d-flex  col-8">
+            <form asp-action="AddProductoEnPresupuesto" method="post" class="ms-4 d-flex align-items-end">
+                <section class="col-8 mx-2">
+                    <input type="hidden" name="idPresupuesto" value="@Model.Presupuesto.IdPresupuesto" />
+                    <select name="idProducto" class="form-control">
+                        <option value="">Seleccione un Producto</option>
+                        @foreach (var producto in Model.Productos)
+                        {
+                            <option value="@producto.IdProducto">
+                                @producto.Descripcion - $@producto.Precio
+                            </option>
+                        }
+                    </select>
+                </section>
+                <section class="col-2 mx-2">
+                    <label for="cantidad" class="me-2">Cantidad:</label>
+                    <input type="number" id="cantidad" name="cantidad" class="form-control me-2" min="1" required />
+                </section>
+                <button type="submit" class="btn btn-primary">Agregar Producto</button>
+            </form>
+        </section>
+
+
+
         <!-- Formulario para agregar producto -->
-        <form asp-action="AddProductoEnPresupuesto" method="post" class="ms-4 d-flex align-items-center">
-            <input type="hidden" name="idPresupuesto" value="@Model.IdPresupuesto" />
-            <label for="productId" class="me-2">ID Producto:</label>
-            <input type="number" id="productId" name="idProducto" class="form-control me-2" required />
 
-            <label for="cantidad" class="me-2">Cantidad:</label>
-            <input type="number" id="cantidad" name="cantidad" class="form-control me-2" min="1" required />
-
-            <button type="submit" class="btn btn-primary">Agregar Producto</button>
-        </form>
     </section>
 
     <!-- Encabezados de columnas -->
@@ -26,9 +43,9 @@
     </div>
 
     <!-- Detalle del presupuesto -->
-    @if (Model.Detalle != null && Model.Detalle.Any())
+    @if (Model.Presupuesto.Detalle != null && Model.Presupuesto.Detalle.Any())
     {
-        @foreach (var detalle in Model.Detalle)
+        @foreach (var detalle in Model.Presupuesto.Detalle)
         {
             <div class="row bg-light p-2 border-bottom">
                 <div class="col-6">@detalle.Producto.Descripcion</div>

@@ -8,11 +8,13 @@ public class PresupuestoController : Controller
 {
     private readonly PresupuestoRepo.PresupuestoRepository _presupuestoRepository;
     private readonly ClienteRepo.ClienteRepository _clienteRepository;
+    private readonly ProductRepo.ProductoRepository _productRepository;
 
-    public PresupuestoController(PresupuestoRepo.PresupuestoRepository presupuestoRepository, ClienteRepo.ClienteRepository clienteRepository)
+    public PresupuestoController(PresupuestoRepo.PresupuestoRepository presupuestoRepository, ClienteRepo.ClienteRepository clienteRepository,ProductRepo.ProductoRepository productRepository)
     {
         _presupuestoRepository = presupuestoRepository;
         _clienteRepository = clienteRepository;
+        _productRepository = productRepository;
     }
 
     // ejecutar con: dotnet watch
@@ -45,11 +47,7 @@ public class PresupuestoController : Controller
     // }
     public IActionResult Create()
     {
-        var viewModel = new PresupuestoViewModel
-        {
-            Presupuesto = new Presupuesto(),
-            Clientes = _clienteRepository.GetAll()
-        };
+        var viewModel = new CrearPresupuestoViewModel(_clienteRepository.GetAll());
         return View(viewModel);
     }
 
@@ -65,7 +63,7 @@ public class PresupuestoController : Controller
     //     return RedirectToAction("GetAll");
     // }
     [HttpPost]
-public IActionResult Create(PresupuestoViewModel viewModel)
+public IActionResult Create(CrearPresupuestoViewModel viewModel)
 {
     // Asignar el cliente seleccionado al destinatario del presupuesto
     viewModel.Presupuesto.Destinatario = new Cliente { IdCliente = viewModel.Presupuesto.Destinatario.IdCliente };
@@ -135,13 +133,14 @@ public IActionResult Create(PresupuestoViewModel viewModel)
 
     public IActionResult AddProductoEnPresupuesto(int id)
     {
-        var presupuestos = _presupuestoRepository.GetById(id); // Busca el producto por ID
-        if (presupuestos == null)
+        var viewModel = new AgregarProductoViewModel(_presupuestoRepository.GetById(id),_productRepository.GetAll());
+ 
+        if (viewModel.Presupuesto == null)
         {
             ViewData["ErrorMessage"] = "El presupuesto con el ID proporcionado no existe.";
             return View("Error");
         }
-        return View(presupuestos);
+        return View(viewModel);
     }
 
     [HttpPost]
