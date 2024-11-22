@@ -1,12 +1,13 @@
 using System.Diagnostics;
+using IClienteRepo;
 using Microsoft.AspNetCore.Mvc;
 using tl2_tp6_2024_Marcos_Leonel_Lopez.Models;
 
 namespace tl2_tp6_2024_Marcos_Leonel_Lopez.Controllers;
 public class ClienteController : Controller
 {
-    private readonly ClienteRepo.ClienteRepository _clienteRepository;
-    public ClienteController(ClienteRepo.ClienteRepository clienteRepository)
+    private readonly IClienteRepository _clienteRepository;
+    public ClienteController(IClienteRepository clienteRepository)
     {
         _clienteRepository = clienteRepository;
     }
@@ -14,7 +15,6 @@ public class ClienteController : Controller
     {
         return View();
     }
-
     [HttpGet]
     public IActionResult GetAll()
     {
@@ -42,7 +42,6 @@ public class ClienteController : Controller
         var cliente = _clienteRepository.Create(nuevoCliente);
         return RedirectToAction("GetAll");
     }
-
     [HttpGet]
     public IActionResult Delete(int id)
     {
@@ -54,14 +53,12 @@ public class ClienteController : Controller
         }
         return View(cliente);
     }
-
     [HttpPost]
     public IActionResult Delete(Cliente cliente, int id)
     {
         _clienteRepository.Delete(id);
         return RedirectToAction("GetAll");
     }
-
     [HttpGet]
     public IActionResult Update(int id)
     {
@@ -73,11 +70,10 @@ public class ClienteController : Controller
         }
         return View(cliente);
     }
-
     [HttpPost]
-    public IActionResult Update(Cliente cliente,int id)
+    public IActionResult Update(Cliente cliente, int id)
     {
-        _clienteRepository.Update(cliente,id);
+        _clienteRepository.Update(cliente, id);
         return RedirectToAction("GetAll");
     }
 

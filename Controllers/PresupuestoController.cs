@@ -1,20 +1,25 @@
 using System.Diagnostics;
+using IClienteRepo;
+using IPresupuestoRepo;
+using IProductoRepo;
 using Microsoft.AspNetCore.Mvc;
 using tl2_tp6_2024_Marcos_Leonel_Lopez.Models;
+
+
+
 
 namespace tl2_tp6_2024_Marcos_Leonel_Lopez.Controllers;
 
 public class PresupuestoController : Controller
 {
-    private readonly PresupuestoRepo.PresupuestoRepository _presupuestoRepository;
-    private readonly ClienteRepo.ClienteRepository _clienteRepository;
-    private readonly ProductRepo.ProductoRepository _productRepository;
-
-    public PresupuestoController(PresupuestoRepo.PresupuestoRepository presupuestoRepository, ClienteRepo.ClienteRepository clienteRepository,ProductRepo.ProductoRepository productRepository)
+    private readonly IPresupuestoRepository _presupuestoRepository;
+    private readonly IClienteRepository _clienteRepository;
+    private readonly IProductoRepository _proroductoRepository;
+    public PresupuestoController(IPresupuestoRepository presupuestoRepository, IClienteRepository clienteRepository, IProductoRepository productoRepository)
     {
         _presupuestoRepository = presupuestoRepository;
         _clienteRepository = clienteRepository;
-        _productRepository = productRepository;
+        _proroductoRepository = productoRepository;
     }
 
     // ejecutar con: dotnet watch
@@ -39,41 +44,22 @@ public class PresupuestoController : Controller
         }
         return View(presupuestos);
     }
-
     [HttpGet]
-    // public IActionResult Create()
-    // {
-    //     return View(new Presupuesto());
-    // }
     public IActionResult Create()
     {
         var viewModel = new CrearPresupuestoViewModel(_clienteRepository.GetAll());
         return View(viewModel);
     }
-
     [HttpPost]
-    // public IActionResult Create(Presupuesto nuevoPresupuesto)
-    // {
-    //     var producto = _presupuestoRepository.Create(nuevoPresupuesto);
-    //     return RedirectToAction("GetAll");
-    // }
-    // public IActionResult Create(PresupuestoViewModel viewModel)
-    // {
-    //     _presupuestoRepository.Create(viewModel.Presupuesto);
-    //     return RedirectToAction("GetAll");
-    // }
-    [HttpPost]
-public IActionResult Create(CrearPresupuestoViewModel viewModel)
-{
-    // Asignar el cliente seleccionado al destinatario del presupuesto
-    viewModel.Presupuesto.Destinatario = new Cliente { IdCliente = viewModel.Presupuesto.Destinatario.IdCliente };
+    public IActionResult Create(CrearPresupuestoViewModel viewModel)
+    {
+        // Asignar el cliente seleccionado al destinatario del presupuesto
+        viewModel.Presupuesto.Destinatario = new Cliente { IdCliente = viewModel.Presupuesto.Destinatario.IdCliente };
 
-    // Crear el presupuesto usando el repositorio
-    _presupuestoRepository.Create(viewModel.Presupuesto);
-    return RedirectToAction("GetAll");
-}
-
-
+        // Crear el presupuesto usando el repositorio
+        _presupuestoRepository.Create(viewModel.Presupuesto);
+        return RedirectToAction("GetAll");
+    }
     [HttpGet]
     public IActionResult Update(int id)
     {
@@ -109,7 +95,6 @@ public IActionResult Create(CrearPresupuestoViewModel viewModel)
         }
         return RedirectToAction("Update", new { id = idPresupuesto });
     }
-
     [HttpGet]
     public IActionResult Delete(int id)
     {
@@ -121,20 +106,17 @@ public IActionResult Create(CrearPresupuestoViewModel viewModel)
         }
         return View(presupuestos);
     }
-
     [HttpPost]
     public IActionResult Delete(Presupuesto presupuesto, int id)
     {
         _presupuestoRepository.Remove(id);
         return RedirectToAction("GetAll");
     }
-
     [HttpGet]
-
     public IActionResult AddProductoEnPresupuesto(int id)
     {
-        var viewModel = new AgregarProductoViewModel(_presupuestoRepository.GetById(id),_productRepository.GetAll());
- 
+        var viewModel = new AgregarProductoViewModel(_presupuestoRepository.GetById(id), _proroductoRepository.GetAll());
+
         if (viewModel.Presupuesto == null)
         {
             ViewData["ErrorMessage"] = "El presupuesto con el ID proporcionado no existe.";
@@ -142,22 +124,12 @@ public IActionResult Create(CrearPresupuestoViewModel viewModel)
         }
         return View(viewModel);
     }
-
     [HttpPost]
     public IActionResult AddProductoEnPresupuesto(int idPresupuesto, int idProducto, int cantidad)
     {
         Presupuesto result = _presupuestoRepository.AddProductoEnPresupuesto(idPresupuesto, idProducto, cantidad);
         return RedirectToAction("AddProductoEnPresupuesto", new { id = idPresupuesto });
-
     }
-
-
-
-
-
-
-
-
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

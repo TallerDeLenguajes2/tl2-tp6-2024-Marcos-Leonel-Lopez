@@ -1,8 +1,8 @@
 using Microsoft.Data.Sqlite;
-
+using IClienteRepo;
 namespace ClienteRepo
 {
-    public class ClienteRepository
+    public class ClienteRepository : IClienteRepository
     {
         private string cadenaConexion = "Data Source=db/Tienda.db;Cache=Shared";
         public List<Cliente> GetAll()
@@ -152,20 +152,5 @@ namespace ClienteRepo
                 return null;
             }
         }
-        // public bool Delete(int idCliente)
-        // {
-        //     string query = "DELETE FROM Clientes WHERE idCliente = @id";
-        //     using (var connection = new SqliteConnection(cadenaConexion))
-        //     {
-        //         connection.Open();
-        //         using (SqliteCommand command = new SqliteCommand(query, connection))
-        //         {
-        //             command.Parameters.Add(new SqliteParameter("@id", idCliente));
-        //             int rowsAffected = command.ExecuteNonQuery();
-        //             connection.Close();
-        //             return rowsAffected > 0;
-        //         }
-        //     }
-        // }
     }
 }

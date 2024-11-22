@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using IProductoRepo;
 using Microsoft.AspNetCore.Mvc;
 using tl2_tp6_2024_Marcos_Leonel_Lopez.Models;
 
@@ -6,18 +7,12 @@ namespace tl2_tp6_2024_Marcos_Leonel_Lopez.Controllers;
 
 public class ProductoController : Controller
 {
-    // private readonly ILogger<HomeController> _logger;
-
-    // public HomeController(ILogger<HomeController> logger)
-    // {
-    //     _logger = logger;
-    // }
-
-    private readonly ProductRepo.ProductoRepository _productoRepository;
+    //private readonly ProductRepo.ProductoRepository _productoRepository;
+    private readonly IProductoRepository _productoRepository;
     private readonly ProductValidator _productValidator;
     private List<Producto> productos;
     private Producto producto;
-    public ProductoController(ProductRepo.ProductoRepository productoRepository, ProductValidator productValidator)
+    public ProductoController(IProductoRepository productoRepository, ProductValidator productValidator)
     {
         _productoRepository = productoRepository; // Usa la instancia inyectada
         _productValidator = productValidator;

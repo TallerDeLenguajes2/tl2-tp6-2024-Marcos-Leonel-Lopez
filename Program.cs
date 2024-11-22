@@ -1,11 +1,22 @@
+using ProductRepo;
+using PresupuestoRepo;
+using ClienteRepo;
+using IPresupuestoRepo;
+using IProductoRepo;
+using IClienteRepo;
+
+
+
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped<ProductRepo.ProductoRepository>();
-builder.Services.AddScoped<PresupuestoRepo.PresupuestoRepository>();
-builder.Services.AddScoped<ClienteRepo.ClienteRepository>();
+builder.Services.AddScoped<IProductoRepository,ProductoRepository>();
+builder.Services.AddScoped<IPresupuestoRepository,PresupuestoRepository>();
+builder.Services.AddScoped<IClienteRepository,ClienteRepository>();
 builder.Services.AddScoped<ProductValidator>();
 
 var app = builder.Build();

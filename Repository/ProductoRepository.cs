@@ -1,9 +1,9 @@
 using Microsoft.Data.Sqlite;
-
+using IProductoRepo;
 namespace ProductRepo
 {
     //public class ProductoRepository : IRepository<Producto>
-    public class ProductoRepository
+    public class ProductoRepository : IProductoRepository
     {
         private string cadenaConexion = "Data Source=db/Tienda.db;Cache=Shared";
         private int obtenerId(Producto prod)
